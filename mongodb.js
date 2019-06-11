@@ -5,8 +5,6 @@ const ObjectID = mongodb.ObjectID;
 const connectionURL = 'mongodb://localhost:27017';
 const databaseName = 'task-manager';
 
-const id = new ObjectID();
-console.log(id);
 
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
@@ -16,55 +14,24 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
   const db = client.db(databaseName);
 
-  db.collection('users').insertOne({
-    name: 'Blas',
-    age: '41'
-  }, (error, result) => {
-    if(error){
-      return console.log("Unable to insert user");
+  /*db.collection('users').updateOne({
+    _id: new ObjectID("5cfd9b995d3ca7215c06b38a")
+  }, {
+    $inc: {
+      age: 1
     }
+  })
+  .then((result) => {console.log(result)})
+  .catch((error) => {console.log(error)}) */
 
-    console.log(result.ops);
-  });
-
-
-/*  db.collection('users').insertMany([
-    {
-        name: 'Jen',
-        age: 28
-    },
-    {
-        name: 'Gunther',
-        age: 27
-    }
-  ], (error, result) => {
-    if(error){
-      return console.log("Unable to insert documents");
-    }
-
-    console.log(result.ops);
-  }); */
-
-  /*db.collection('tasks').insertMany([
-    {
-      description: 'Learn nodeJS',
+  db.collection('tasks').updateMany({
+    completed: false
+  }, {
+    $set: {
       completed: true
-    },
-    {
-      description: 'Learn React',
-      completed: false
-    },
-    {
-      description: 'Find a good job',
-      completed: false
     }
-  ], (error, result) => {
-    if(error){
-      return console.log('Unable to insert documents');
-    }
-
-    console.log(result.ops);
-  });*/
-
+  })
+  .then((result) => {console.log(result.modifiedCount)})
+  .catch((error) => {console.log(error)})
 
 });
