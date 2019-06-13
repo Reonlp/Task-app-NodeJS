@@ -1,63 +1,26 @@
+/*What is a REST API: Representational state transfer application programming interface*/
+//It's nothing more than a set of tools that allow you to write software apps
+//REST API. Allows clients such as a web app to access and get and manipulate
+//resources, data, etc.i
+
 const mongoose = require('mongoose');
-const validator = require('validator');
+
 
 mongoose.connect('mongodb://localhost:27017/task-manager-api', {
   useNewUrlParser: true,
   useCreateIndex: true
 });
 
-const User = mongoose.model('User', {
-  name: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  email: {
-     type: String,
-     required: true,
-     trim: true,
-     lowercase: true,
-     validate(value){
-       if(!validator.isEmail(value)){
-         throw new Error('Email is invalid');
-       }
-     }
-  },
-  age: {
-    type: Number,
-    default: 0,
-    validate(value){
-      if(value < 0){
-        throw new Error('Age must be a positive number');
-      }
-    }
-  }
-});
 
-const me = new User({
-  name: '    Leon',
-  email: 'pop@adf.com'
-});
 
-me.save()
-  .then((result) => {console.log(result)})
-  .catch((error) => {console.log(error)})
-
-  /*const Task = mongoose.model('Task', {
+  const Task = mongoose.model('Task', {
     description: {
-      type: String
+      type: String,
+      required: true,
+      trim: true
     },
     completed: {
-      type: Boolean
+      type: Boolean,
+      default: false
     }
   });
-
-  const firstPriority = new Task({
-    description: "Learning react fast",
-    completed: false
-  });
-
-  firstPriority.save()
-    .then((result) => {console.log(result)})
-    .catch((error) => {console.log(error)})
-*/
