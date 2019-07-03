@@ -6,18 +6,6 @@ const taskRouter = require('./routers/task');
 const app = express();
 const port = process.env.PORT || 3000;
 
-/*app.use((req, res, next) => {
-  if(req.method == 'GET'){
-    res.send('Get requests are disabled');
-  } else {
-    next();
-  }
-}); */
-
-/*app.use((req, res, next) => {
-  res.status(503).send('Site is currently down. Check back soon');
-}); */
-
 app.use(express.json());
 app.use(userRouter);
 app.use(taskRouter);
@@ -26,14 +14,17 @@ app.listen(port, () => {
   console.log('Server is up on port ' + port);
 });
 
-const jwt = require('jsonwebtoken');
+const Task = require('./models/task');
+const User = require('./models/user');
 
-const myFunction = async () => {
-  const token = jwt.sign({ _id: 'abc123' }, 'this is my new course', { expiresIn: '7 days'});
-  console.log(token);
+const main = async () => {
+  //const task = await Task.findById('5d1c2530abbdae0774cb21a1');
+  //await task.populate('owner').execPopulate();
+  //console.log(task.owner);
 
-  const data = jwt.verify(token, 'this is my new course');
-  console.log(data);
+  const user = await User.findById('5d1c246137073b070804eef0');
+  await user.populate('tasks').execPopulate();
+
 }
 
-myFunction();
+main();
